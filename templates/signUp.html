@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+    Welcome to todo list
+{% endblock %}
+{% block content %}
+    <div>
+        <h1>
+            SignUp
+        </h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% if form.non_field_errors %}
+                <div>{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                <div>
+                    <label>{{ field.label }}</label>
+                    <div>{{ field }}</div>
+                </div>
+                {% if field.errors %}
+                    <div>{{ field.errors }}</div>
+                {% endif %}
+            {% endfor %}
+            <input type="submit" value="signUp">
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock %}
