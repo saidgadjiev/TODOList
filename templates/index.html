@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+    Welcome to todo list
+{% endblock %}
+{% block content %}
+    <div>
+        <div>
+            <h1>
+                SignIn
+            </h1>
+            <form action="signIn" method="post">
+                <label>
+                    Email
+                </label>
+                <input type="email" name="email" required>
+                <label>
+                    Password
+                </label>
+                <input type="password" name="password" required>
+                <input type="submit" value="SignIn">
+                {% csrf_token %}
+            </form>
+        </div>
+        <form action="http://google.com">
+            <input type="submit" value="Go to Google">
+        </form>
+    </div>
+{% endblock %}
