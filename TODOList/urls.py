@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^signIn/$', 'django.contrib.auth.views.login', {'template_name': 'index.html'}),
     url(r'^signOut/$', 'django.contrib.auth.views.logout'),
     url(r'^signUp/$', views.signUp),
+    url(r'^add-todo/$', views.addTodo),
 ]

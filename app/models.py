@@ -8,4 +8,6 @@ from django.utils import timezone
 class Todo(models.Model):
     todo_job = models.TextField()
     author = models.ForeignKey(User)
-    deadline_date = models.DateTimeField(default=timezone.now)
+    deadline_date = models.DateField(blank=False, default=timezone.now)
+    created_date = models.DateField(auto_now_add=True)
+    completed = models.BooleanField(default=False)

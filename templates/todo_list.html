@@ -1,14 +1,55 @@
 {% extends 'base.html' %}
 {% block title %}
-    Welcome to todo list
+    Your todo list
 {% endblock %}
 {% block content %}
     <div>
-        <h1>
-            {{ request.path }}
-        </h1>
-        {% if user.is_authenticated %}
-            <a href="{% url 'django.contrib.auth.views.logout' %}?next=/">Log out</a>
-        {% endif %}
+        <div>
+            <b>
+                Hello {{ user.username }}
+            </b>&nbsp;|&nbsp;
+            <a href="{% url 'django.contrib.auth.views.logout' %}?next=/">
+                Logout
+            </a>
+        </div>
+    </div>
+    <div>
+        <h3>
+            Add todo
+        </h3>
+        <form id="formAddJob" action="" method="post">
+            <label>Job</label>
+            <p><textarea rows="3" cols="45" name="job"></textarea></p>
+            <label>Deadline</label>
+            <p><input type="date" name="deadline"></p>
+            <p><input type="submit" name="addJob" value="Add Job"></p>
+            {% csrf_token %}
+        </form>
+    </div>
+    <div>
+        <table width="100%" id="todo_table" cellpadding="5">
+            <tr>
+                <td width="20%">DeadLine</td>
+                <td width="70%">Job</td>
+            </tr>
+            {% for todo in todoList %}
+                <form action="" method="post">
+                    <tr>
+                        <td>
+                            {{ todo.deadline_date|date:"Y-m-d" }}
+                        </td>
+                        <td>
+                            {{ todo.todo_job }}
+                        </td>
+                        <td>
+                            <input type="checkbox" name="completed" data-id="{{ todo.id }}">
+                        </td>
+                        <td>
+                            <input type="button" name="delete" value="Delete" data-id="{{ todo.id }}">
+                        </td>
+                    </tr>
+                </form>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}
