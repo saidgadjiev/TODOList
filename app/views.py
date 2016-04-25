@@ -42,15 +42,27 @@ def signUp(request):
 
 
 def addTodo(request):
-    response_data = {}
     if request.method == 'POST':
+        response_data = {}
         jobText = request.POST.get('job')
         deadline = request.POST.get('deadline')
-        #todo = Todo.objects.create(todo_job=jobText, author=request.user,
+        # todo = Todo.objects.create(todo_job=jobText, author=request.user,
         #                           deadline_date=datetime.strptime(deadline, "%Y-%m-%d").date())
-        date = datetime.strptime(deadline, "%Y-%m-%d").date()
         response_data['job_text'] = jobText
         response_data['deadline'] = deadline
         response_data['todo_id'] = 3
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def deleteTodo(request):
+    if request.method == 'POST':
+        response_data = {'status': 'OK'}
+        todo_id = request.POST.get('id')
+        #try:
+        #    Todo.objects.get(id=todo_id).delete()
+        #    response_data['status'] = 'OK'
+        #except Todo.DoesNotExist:
+        #    response_data['status'] = 'BAD'
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")

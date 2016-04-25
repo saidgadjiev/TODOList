@@ -10,6 +10,7 @@ $(document).ready(function () {
             }).done(function (resp) {
                 $('#todo_table').find('tr').first().after('<tr><td>' + resp.deadline + '</td><td>' +
                     resp.job_text + '</td><td><input type="checkbox" name="completed" ' +
+                    'data-id="' + resp.todo_id + '"></td><td><input type="button" name="delete" value="Delete" ' +
                     'data-id="' + resp.todo_id + '"></td></tr>');
             });
             $(form).trigger('reset')
