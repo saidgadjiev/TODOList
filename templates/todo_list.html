@@ -17,12 +17,11 @@
         <h3>
             Add todo
         </h3>
-        <form id="formAddJob" action="" method="post">
+        <form id="form_add_job" action="" method="post">
             <label>Job</label>
             <p><textarea rows="3" cols="45" name="job"></textarea></p>
             <label>Deadline</label>
             <p><input type="date" name="deadline"></p>
-            <p><input type="submit" name="addJob" value="Add Job"></p>
             {% csrf_token %}
         </form>
     </div>

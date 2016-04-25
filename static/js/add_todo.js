@@ -27,6 +27,14 @@ $(document).ready(function () {
             deadline: "Pick the date"
         }
     });
+    $(document).keypress(function (event) {
+        var key = event.which;
+        if (key == 13) {
+            event.preventDefault();
+            console.log('Submit');
+            $("#formAddJob").submit();
+        }
+    })
 });
 
 /**/
