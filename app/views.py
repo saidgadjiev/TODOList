@@ -14,7 +14,7 @@ import json
 def main_page(request):
     if request.user.is_authenticated():
         # TODO: show todolist
-        todoList = Todo.objects.filter(author_id=request.user.id, completed=False)
+        todoList = Todo.objects.filter(author_id=request.user.id)
         return render_to_response('todo_list.html',
                                   {'todoList': todoList, 'user': request.user},
                                   context_instance=RequestContext(request))
@@ -66,3 +66,15 @@ def deleteTodo(request):
         #    response_data['status'] = 'BAD'
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def completeTodo(request):
+    if request.method == 'POST':
+        response_data = {}
+        todo = Todo.objects.get(id=request.POST.get('id'))
+        todo.completed = not todo.completed
+        response_data['complete'] = todo.completed
+        todo.save()
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+

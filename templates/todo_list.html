@@ -27,12 +27,16 @@
     </div>
     <div>
         <table width="100%" id="todo_table" cellpadding="5">
-            <tr>
+            <tr class="table_header">
                 <td width="20%">DeadLine</td>
                 <td width="70%">Job</td>
             </tr>
             {% for todo in todoList %}
-                <tr>
+                {% if todo.completed %}
+                    <tr class="strikeout todo_complete">
+                {% else %}
+                    <tr class="todo_active">
+                {% endif %}
                     <td>
                         {{ todo.deadline_date|date:"Y-m-d" }}
                     </td>
@@ -40,7 +44,11 @@
                         {{ todo.todo_job }}
                     </td>
                     <td>
-                        <input type="checkbox" name="completed" data-id="{{ todo.id }}">
+                        {% if todo.completed %}
+                            <input type="checkbox" name="completed" checked data-id="{{ todo.id }}">
+                        {% else %}
+                            <input type="checkbox" name="completed" data-id="{{ todo.id }}">
+                        {% endif %}
                     </td>
                     <td>
                         <input type="button" name="delete" value="Delete" data-id="{{ todo.id }}">

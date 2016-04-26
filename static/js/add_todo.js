@@ -2,7 +2,7 @@
  * Created by said on 25.04.16.
  */
 $(document).ready(function () {
-    $("#formAddJob").validate({
+    $("#form_add_job").validate({
         submitHandler: function (form) {
             $.post('/add-todo/', {
                 'job': $("textarea[name='job']").val(),
@@ -32,7 +32,7 @@ $(document).ready(function () {
         if (key == 13) {
             event.preventDefault();
             console.log('Submit');
-            $("#formAddJob").submit();
+            $("#form_add_job").submit();
         }
     })
 });

@@ -17,13 +17,48 @@
     <script src="{% static "js/csrf.js" %}"></script>
     <script src="{% static "js/delete_todo.js" %}"></script>
     <script src="{% static "js/add_todo.js" %}"></script>
+    <script src="{% static "js/complete_todo.js" %}"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            empty-cells: show;
+        }
+
+        .table_header {
+            position: relative;
+            color: blue;
+        }
+
+        .todo_active {
+            position: relative;
+            color: green;
+        }
+
+        .todo_complete {
+            position: relative;
+            color: gray;
+        }
+
+        td {
+            position: relative;
+        }
+
+        tr.strikeout td:before {
+            content: " ";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            border-bottom: 1px solid #111;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    {% block header %}
+{% block header %}
 
-    {% endblock %}
-    {% block content %}
+{% endblock %}
+{% block content %}
 
-    {% endblock %}
+{% endblock %}
 </body>
 </html>

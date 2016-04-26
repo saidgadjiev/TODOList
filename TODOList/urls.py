@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^signOut/$', 'django.contrib.auth.views.logout'),
     url(r'^signUp/$', views.signUp),
     url(r'^add-todo/$', views.addTodo),
-    url(r'^delete-todo/$', views.deleteTodo)
+    url(r'^delete-todo/$', views.deleteTodo),
+    url(r'^comlete-todo/$', views.completeTodo),
 ]
