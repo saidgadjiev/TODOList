@@ -13,10 +13,18 @@ import json
 
 def main_page(request):
     if request.user.is_authenticated():
-        # TODO: show todolist
-        todoList = Todo.objects.filter(author_id=request.user.id)
+        response_data = []
+        todoList = Todo.objects.filter(author_id=request.user.id).order_by('-created_date')
+        now = datetime.now().date()
+        for todo in todoList:
+            todo_data = {}
+            todo_data['todo_data'] = todo
+            old = todo.deadline_date
+            todo_data['overdude'] = old < now
+            response_data.append(todo_data)
+
         return render_to_response('todo_list.html',
-                                  {'todoList': todoList, 'user': request.user},
+                                  {'todoList': response_data, 'user': request.user},
                                   context_instance=RequestContext(request))
     else:
         return render_to_response('index.html', context_instance=RequestContext(request))
@@ -44,13 +52,16 @@ def signUp(request):
 def addTodo(request):
     if request.method == 'POST':
         response_data = {}
-        jobText = request.POST.get('job')
+        job_text = request.POST.get('job')
         deadline = request.POST.get('deadline')
-        # todo = Todo.objects.create(todo_job=jobText, author=request.user,
-        #                           deadline_date=datetime.strptime(deadline, "%Y-%m-%d").date())
-        response_data['job_text'] = jobText
+        todo = Todo.objects.create(todo_job=job_text, author=request.user,
+                                   deadline_date=datetime.strptime(deadline, "%Y-%m-%d").date())
+        response_data['job_text'] = job_text
         response_data['deadline'] = deadline
-        response_data['todo_id'] = 3
+        response_data['todo_id'] = todo.id
+        now = datetime.now().date()
+        curr_date = datetime.strptime(deadline, "%Y-%m-%d").date()
+        response_data['overdude'] = curr_date < now
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -59,11 +70,11 @@ def deleteTodo(request):
     if request.method == 'POST':
         response_data = {'status': 'OK'}
         todo_id = request.POST.get('id')
-        #try:
-        #    Todo.objects.get(id=todo_id).delete()
-        #    response_data['status'] = 'OK'
-        #except Todo.DoesNotExist:
-        #    response_data['status'] = 'BAD'
+        try:
+            Todo.objects.get(id=todo_id).delete()
+            response_data['status'] = 'OK'
+        except Todo.DoesNotExist:
+            response_data['status'] = 'BAD'
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -71,10 +82,10 @@ def deleteTodo(request):
 def completeTodo(request):
     if request.method == 'POST':
         response_data = {}
-        todo = Todo.objects.get(id=request.POST.get('id'))
+        todo_id = request.POST.get('id')
+        todo = Todo.objects.get(id=todo_id)
         todo.completed = not todo.completed
         response_data['complete'] = todo.completed
         todo.save()
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
-

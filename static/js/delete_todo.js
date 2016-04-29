@@ -7,8 +7,10 @@ $(document).ready(function () {
         var $del = $(this);
         $.post('/delete-todo/', {
             'id': $del.data('id')
-        }).done(function () {
-            row.remove();
+        }).done(function (resp) {
+            if (resp.status == 'OK') {
+                row.remove();
+            } 
         });
     });
 });

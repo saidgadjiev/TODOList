@@ -17,7 +17,7 @@
         <h3>
             Add todo
         </h3>
-        <form id="form_add_job" action="" method="post">
+        <form id="formAddJob" action="" method="post">
             <label>Job</label>
             <p><textarea rows="3" cols="45" name="job"></textarea></p>
             <label>Deadline</label>
@@ -32,29 +32,77 @@
                 <td width="70%">Job</td>
             </tr>
             {% for todo in todoList %}
-                {% if todo.completed %}
+                {% if todo.todo_data.completed %}
                     <tr class="strikeout todo_complete">
                 {% else %}
-                    <tr class="todo_active">
+                    {% if todo.overdude %}
+                        <tr class="todo_overdude">
+                    {% else %}
+                        <tr class="todo_active">
+                    {% endif %}
                 {% endif %}
                     <td>
-                        {{ todo.deadline_date|date:"Y-m-d" }}
+                        {{ todo.todo_data.deadline_date|date:"Y-m-d" }}
                     </td>
                     <td>
-                        {{ todo.todo_job }}
+                        {{ todo.todo_data.todo_job }}
                     </td>
                     <td>
-                        {% if todo.completed %}
-                            <input type="checkbox" name="completed" checked data-id="{{ todo.id }}">
+                        {% if todo.todo_data.completed %}
+                            <input type="checkbox" name="completed" checked data-id="{{ todo.todo_data.id }}">
                         {% else %}
-                            <input type="checkbox" name="completed" data-id="{{ todo.id }}">
+                            <input type="checkbox" name="completed" data-id="{{ todo.todo_data.id }}">
                         {% endif %}
                     </td>
                     <td>
-                        <input type="button" name="delete" value="Delete" data-id="{{ todo.id }}">
+                        <input type="button" name="delete" value="Delete" data-id="{{ todo.todo_data.id }}">
                     </td>
                 </tr>
             {% endfor %}
         </table>
     </div>
+    <script type="application/javascript">
+    $(document).ready(function () {
+    $("#formAddJob").validate({
+        submitHandler: function (form) {
+            $.post('/add-todo/', {
+                'job': $("textarea[name='job']").val(),
+                'deadline': $("input[name='deadline']").val()
+            }).done(function (resp) {
+                var class_name;
+                if (resp.overdude) {
+                    class_name = "todo_overdude";
+                } else {
+                    class_name ="todo_active";
+                }
+                var row = '<tr class=' + class_name + '><td>' + resp.deadline + '</td><td>' +
+                    resp.job_text + '</td><td><input type="checkbox" name="completed" ' +
+                    'data-id="' + resp.todo_id + '"></td><td><input type="button" name="delete" value="Delete" ' +
+                    'data-id="' + resp.todo_id + '"></td></tr>';
+                $('#todo_table').find('tr').first().after(row);
+            });
+            $(form).trigger('reset')
+        },
+        rules: {
+            job: {required: true, minlength: 1},
+            deadline: "required"
+        },
+        messages: {
+            job: {
+                required: "Please enter job text",
+                minlength: "Please enter min 1 symb"
+            },
+            deadline: "Pick the date"
+        }
+    });
+    $(document).keypress(function (event) {
+        var key = event.which;
+        if (key == 13) {
+            event.preventDefault();
+            console.log('Submit');
+            $("#formAddJob").submit();
+        }
+    })
+    });
+    </script>
 {% endblock %}

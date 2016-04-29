@@ -16,7 +16,6 @@
     <script src="{% static "js/jquery.validate.js" %}"></script>
     <script src="{% static "js/csrf.js" %}"></script>
     <script src="{% static "js/delete_todo.js" %}"></script>
-    <script src="{% static "js/add_todo.js" %}"></script>
     <script src="{% static "js/complete_todo.js" %}"></script>
     <style>
         table {
@@ -27,16 +26,25 @@
         .table_header {
             position: relative;
             color: blue;
+            font-weight: bold;
         }
 
         .todo_active {
             position: relative;
-            color: green;
+            color: darkgreen;
+            font-weight: bold;
+        }
+
+        .todo_overdude {
+            position: relative;
+            color: darkred;
+            font-weight: bold;
         }
 
         .todo_complete {
             position: relative;
             color: gray;
+            font-weight: bold;
         }
 
         td {
